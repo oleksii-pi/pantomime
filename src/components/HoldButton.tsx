@@ -4,49 +4,92 @@ type HoldButtonProps = {
   onClick: () => void;
   holdTime?: number; // in milliseconds
   children?: React.ReactNode;
-  disabled?: boolean;
 };
 
 const HoldButton: React.FC<HoldButtonProps> = ({ onClick, holdTime = 1000, children }) => {
   const [progress, setProgress] = useState<number>(0);
   const requestRef = useRef<number | null>(null);
   const startTimeRef = useRef<number | null>(null);
+  const elapsedRef = useRef<number>(0);
+  const isHoldingRef = useRef<boolean>(false);
 
   const startProgress = () => {
+    if (isHoldingRef.current) return; // Prevent multiple starts
+    isHoldingRef.current = true;
     startTimeRef.current = Date.now();
 
     const tick = () => {
-      if (startTimeRef.current !== null) {
-        const elapsed = Date.now() - startTimeRef.current;
-        const newProgress = Math.min((elapsed / holdTime) * 100, 100);
-        setProgress(newProgress);
+      if (!isHoldingRef.current || startTimeRef.current === null) return;
 
-        if (elapsed >= holdTime) {
-          setProgress(100);
-          onClick();
-          cancelProgress();
-          return;
-        }
-        requestRef.current = requestAnimationFrame(tick);
+      const now = Date.now();
+      const elapsed = elapsedRef.current + (now - (startTimeRef.current || now));
+      const newProgress = Math.min((elapsed / holdTime) * 100, 100);
+      setProgress(newProgress);
+
+      if (elapsed >= holdTime) {
+        setProgress(100);
+        onClick();
+        cancelProgress();
+        return;
       }
+
+      requestRef.current = requestAnimationFrame(tick);
     };
 
     requestRef.current = requestAnimationFrame(tick);
   };
 
   const cancelProgress = () => {
-    if (requestRef.current) {
+    if (requestRef.current !== null) {
       cancelAnimationFrame(requestRef.current);
     }
+    isHoldingRef.current = false;
+    elapsedRef.current = 0;
     setProgress(0);
     startTimeRef.current = null;
   };
+
+  const pauseProgress = () => {
+    if (isHoldingRef.current && startTimeRef.current !== null) {
+      const now = Date.now();
+      elapsedRef.current += now - startTimeRef.current;
+      cancelAnimationFrame(requestRef.current!);
+      startTimeRef.current = null;
+    }
+  };
+
+  const resumeProgress = () => {
+    if (isHoldingRef.current && startTimeRef.current === null) {
+      startTimeRef.current = Date.now();
+      requestRef.current = requestAnimationFrame(() => startProgress());
+    }
+  };
+
+  const handleVisibilityChange = () => {
+    if (document.hidden) {
+      pauseProgress();
+    } else {
+      resumeProgress();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      cancelProgress();
+    };
+  }, []);
 
   const handleMouseDown = () => {
     startProgress();
   };
 
   const handleMouseUp = () => {
+    cancelProgress();
+  };
+
+  const handleMouseLeave = () => {
     cancelProgress();
   };
 
@@ -69,17 +112,11 @@ const HoldButton: React.FC<HoldButtonProps> = ({ onClick, holdTime = 1000, child
     cancelProgress();
   };
 
-  useEffect(() => {
-    return () => {
-      cancelProgress();
-    };
-  }, []);
-
   return (
     <button
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
-      onMouseLeave={handleMouseUp}
+      onMouseLeave={handleMouseLeave}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
       onTouchCancel={handleTouchEnd}
