@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import { PiUserSoundBold } from "react-icons/pi";
-import { MdNextPlan } from "react-icons/md";
+import { GrLinkNext } from "react-icons/gr";
 import HoldButton from './components/HoldButton';
 
 const languages = ['de', 'ua'];
@@ -124,7 +124,8 @@ function App() {
           <PiUserSoundBold />
         </button>
         <HoldButton onClick={handleNext} holdTime={1000}>
-          <MdNextPlan />
+          <GrLinkNext />
+
         </HoldButton>
       </div>
     </div>
