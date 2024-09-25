@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
-import { FaRegPlayCircle } from 'react-icons/fa';
+import { PiUserSoundBold } from "react-icons/pi";
+import { MdNextPlan } from "react-icons/md";
+import HoldButton from './components/HoldButton';
 
 const languages = ['de', 'ua'];
 
@@ -14,7 +16,6 @@ function App() {
   const [currentWord, setCurrentWord] = useState<string>('');
   const [usedWords, setUsedWords] = useState<string[]>([]);
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // Load words from text files
   useEffect(() => {
@@ -96,13 +97,8 @@ function App() {
 
   // Handle the Next button click
   const handleNext = () => {
-    if (isLoading) return;
-    setIsLoading(true);
-    setTimeout(() => {
-      getRandomWord();
-      setIsLoading(false);
-    }, 3000); // 3-second delay
-  };
+    getRandomWord();
+};
 
   // Handle language change
   const handleLanguageChange = (lang: string) => {
@@ -113,7 +109,6 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Pantomime</h1>
       <div>
         {languages.map(lang => (
           <button key={lang} onClick={() => handleLanguageChange(lang)} disabled={language === lang}>
@@ -126,13 +121,12 @@ function App() {
       </div>
       <div className="controls">
         <button onClick={speakWord} disabled={!currentWord}>
-          <span role="img" aria-label="ear">👂</span>
+          <PiUserSoundBold />
         </button>
-        <button onClick={handleNext} disabled={isLoading}>
-          Next
-        </button>
+        <HoldButton onClick={handleNext} holdTime={1000}>
+          <MdNextPlan />
+        </HoldButton>
       </div>
-      {isLoading && <p>Loading next word...</p>}
     </div>
   );
 }
