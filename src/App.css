@@ -7,6 +7,14 @@
   margin: 20px;
 }
 
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full viewport height */
+}
+
 .controls {
   display: flex;
   justify-content: center;

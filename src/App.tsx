@@ -4,14 +4,14 @@ import { PiUserSoundBold } from "react-icons/pi";
 import { GrLinkNext } from "react-icons/gr";
 import HoldButton from './components/HoldButton';
 
-const languages = ['de', 'ua'];
+const languages = ['de', 'uk'];
 
 interface WordData {
   [key: string]: string[];
 }
 
 function App() {
-  const [language, setLanguage] = useState<string>('de');
+  const [language, setLanguage] = useState<string>('uk');
   const [words, setWords] = useState<WordData>({});
   const [currentWord, setCurrentWord] = useState<string>('');
   const [usedWords, setUsedWords] = useState<string[]>([]);
@@ -81,7 +81,7 @@ function App() {
   const speakWord = () => {
     if ('speechSynthesis' in window) {
       const utterance = new SpeechSynthesisUtterance(currentWord);
-      let voice = voices.find(v => v.lang.startsWith(language === 'de' ? 'de' : 'uk'));
+      let voice = voices.find(v => v.lang.startsWith(language));
       if (!voice) {
         voice = voices[0];
       }
@@ -116,17 +116,18 @@ function App() {
           </button>
         ))}
       </div>
-      <div className="word-display">
-        {currentWord ? <h2>{currentWord}</h2> : <p>Press "Next" to start</p>}
-      </div>
-      <div className="controls">
-        <button onClick={speakWord} disabled={!currentWord}>
-          <PiUserSoundBold />
-        </button>
-        <HoldButton onClick={handleNext} holdTime={1000}>
-          <GrLinkNext />
-
-        </HoldButton>
+      <div className="content">
+        <div className="word-display">
+          {currentWord ? <h2>{currentWord}</h2> : <p>Press "Next" to start</p>}
+        </div>
+        <div className="controls">
+          <button onClick={speakWord} disabled={!currentWord}>
+        <PiUserSoundBold />
+          </button>
+          <HoldButton onClick={handleNext} holdTime={1000}>
+        <GrLinkNext />
+          </HoldButton>
+        </div>
       </div>
     </div>
   );
