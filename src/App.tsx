@@ -4,6 +4,7 @@ import { PiUserSoundBold } from "react-icons/pi";
 import { GrLinkNext } from "react-icons/gr";
 import HoldButton from './components/HoldButton';
 import { MdAutoDelete } from "react-icons/md";
+import { BrowserRouter } from "react-router-dom";
 
 
 const languages = ['de', 'uk'];
@@ -24,7 +25,7 @@ function App() {
     const loadWords = async () => {
       const wordData: WordData = {};
       for (const lang of languages) {
-        const response = await fetch(`/data/${lang}.txt`);
+        const response = await fetch(`/pantomime/data/${lang}.txt`);
         const text = await response.text();
         wordData[lang] = text.split(',');
       }
@@ -121,32 +122,34 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <div>
-        {languages.map(lang => (
-          <button key={lang} onClick={() => handleLanguageChange(lang)} disabled={language === lang}>
-            {lang.toUpperCase()}
-          </button>
-        ))}
-            <HoldButton onClick={handleClearStorage} style={{ padding: "10px", position: 'absolute', right: '10px', top: '10px' }} holdTime={1000}>
-              <MdAutoDelete />
+    <BrowserRouter basename="/pantomime">
+      <div className="App">
+        <div>
+          {languages.map(lang => (
+            <button key={lang} onClick={() => handleLanguageChange(lang)} disabled={language === lang}>
+              {lang.toUpperCase()}
+            </button>
+          ))}
+              <HoldButton onClick={handleClearStorage} style={{ padding: "10px", position: 'absolute', right: '10px', top: '10px' }} holdTime={1000}>
+                <MdAutoDelete />
+              </HoldButton>
+        </div>
+        <div className="content">
+          <div className="word-display">
+            {currentWord ? <h2>{currentWord}</h2> : <p>Press "Next" to start</p>}
+          </div>
+          <div className="controls">
+            <HoldButton onClick={speakWord} holdTime={0} disabled={!currentWord}>
+              <PiUserSoundBold />
             </HoldButton>
-      </div>
-      <div className="content">
-        <div className="word-display">
-          {currentWord ? <h2>{currentWord}</h2> : <p>Press "Next" to start</p>}
-        </div>
-        <div className="controls">
-          <HoldButton onClick={speakWord} holdTime={0} disabled={!currentWord}>
-            <PiUserSoundBold />
-          </HoldButton>
-          <HoldButton onClick={handleNext} holdTime={1000}>
-            <GrLinkNext />
-          </HoldButton>
-          
+            <HoldButton onClick={handleNext} holdTime={1000}>
+              <GrLinkNext />
+            </HoldButton>
+            
+          </div>
         </div>
       </div>
-    </div>
+    </BrowserRouter>
   );
 }
 
