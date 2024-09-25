@@ -3,6 +3,8 @@ import './App.css';
 import { PiUserSoundBold } from "react-icons/pi";
 import { GrLinkNext } from "react-icons/gr";
 import HoldButton from './components/HoldButton';
+import { MdAutoDelete } from "react-icons/md";
+
 
 const languages = ['de', 'uk'];
 
@@ -107,6 +109,17 @@ function App() {
     setUsedWords([]);
   };
 
+  // Handle clearing local storage
+  const handleClearStorage = () => {
+    const confirmReset = window.confirm('Are you sure you want to reset used words?');
+    if (confirmReset) {
+      const today = new Date().toLocaleDateString();
+      localStorage.removeItem(`usedWords_${language}_${today}`);
+      setUsedWords([]);
+      alert('Used words have been reset.');
+    }
+  };
+
   return (
     <div className="App">
       <div>
@@ -115,18 +128,22 @@ function App() {
             {lang.toUpperCase()}
           </button>
         ))}
+            <HoldButton onClick={handleClearStorage} style={{ padding: "10px", position: 'absolute', right: '10px', top: '10px' }} holdTime={1000}>
+              <MdAutoDelete />
+            </HoldButton>
       </div>
       <div className="content">
         <div className="word-display">
           {currentWord ? <h2>{currentWord}</h2> : <p>Press "Next" to start</p>}
         </div>
         <div className="controls">
-          <button onClick={speakWord} disabled={!currentWord}>
-        <PiUserSoundBold />
-          </button>
-          <HoldButton onClick={handleNext} holdTime={1000}>
-        <GrLinkNext />
+          <HoldButton onClick={speakWord} holdTime={0} disabled={!currentWord}>
+            <PiUserSoundBold />
           </HoldButton>
+          <HoldButton onClick={handleNext} holdTime={1000}>
+            <GrLinkNext />
+          </HoldButton>
+          
         </div>
       </div>
     </div>

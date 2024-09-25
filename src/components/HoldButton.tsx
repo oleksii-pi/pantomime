@@ -4,9 +4,11 @@ type HoldButtonProps = {
   onClick: () => void;
   holdTime?: number; // in milliseconds
   children?: React.ReactNode;
+  style?: React.CSSProperties;
+  disabled?: boolean;
 };
 
-const HoldButton: React.FC<HoldButtonProps> = ({ onClick, holdTime = 1000, children }) => {
+const HoldButton: React.FC<HoldButtonProps> = ({ onClick, holdTime = 1000, children, style, disabled }) => {
   const [progress, setProgress] = useState<number>(0);
   const requestRef = useRef<number | null>(null);
   const startTimeRef = useRef<number | null>(null);
@@ -122,7 +124,8 @@ const HoldButton: React.FC<HoldButtonProps> = ({ onClick, holdTime = 1000, child
       onTouchCancel={handleTouchEnd}
       onKeyDown={handleKeyDown}
       onKeyUp={handleKeyUp}
-      style={{ position: 'relative', padding: '10px 20px', fontSize: '16px' }}
+      disabled={disabled}
+      style={{position: 'relative', padding: '10px 20px', ...style}}
     >
       {children}
       {progress > 0 && (
