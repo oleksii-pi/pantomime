@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import { PiUserSoundBold } from "react-icons/pi";
 import { GrLinkNext } from "react-icons/gr";
-import HoldButton from './components/HoldButton';
+import HoldButton from './components/HoldButton'; 
 import { MdAutoDelete } from "react-icons/md";
-import { BrowserRouter } from "react-router-dom";
 
 
 const languages = ['de', 'uk'];
@@ -25,7 +24,7 @@ function App() {
     const loadWords = async () => {
       const wordData: WordData = {};
       for (const lang of languages) {
-        const response = await fetch(`/pantomime/data/${lang}.txt`);
+        const response = await fetch(`/data/${lang}.txt`);
         const text = await response.text();
         wordData[lang] = text.split(',');
       }
@@ -80,6 +79,12 @@ function App() {
     }
   };
 
+  useEffect(() => {
+    if (words[language] && words[language].length > 0) {
+      getRandomWord();
+    }
+  }, [words, language]);
+
   // Play the word using Speech Synthesis API
   const speakWord = () => {
     if ('speechSynthesis' in window) {
@@ -122,7 +127,6 @@ function App() {
   };
 
   return (
-    <BrowserRouter basename="/pantomime">
       <div className="App">
         <div>
           {languages.map(lang => (
@@ -149,7 +153,6 @@ function App() {
           </div>
         </div>
       </div>
-    </BrowserRouter>
   );
 }
 
