@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import LanguageContext from '../LanguageContext';
-import { MdAutoDelete } from "react-icons/md";
+import { Box, Button, IconButton, Stack } from '@mui/material';
+import AutoDeleteIcon from '@mui/icons-material/AutoDelete';
 
 interface LandingPageProps {
   onStart: () => void;
@@ -23,21 +24,36 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
   };
 
   return (
-    <div>
-      <div>
-        {languages.map(lang => (
-          <button key={lang} onClick={() => handleLanguageChange(lang)} disabled={language === lang}>
-            {lang.toUpperCase()}
-          </button>
-        ))}
-        <button onClick={handleClearStorage} style={{ padding: "10px", position: 'absolute', right: '10px', top: '10px' }}>
-          <MdAutoDelete />
-        </button>
-      </div>
-      <button onClick={onStart} style={{ backgroundColor: 'green', color: 'white', fontSize: '24px', padding: '10px 20px' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 4 }}>
+      <Box sx={{ position: 'relative', mb: 2 }}>
+        <Stack direction="row" spacing={2}>
+          {languages.map((lang) => (
+            <Button
+              key={lang}
+              onClick={() => handleLanguageChange(lang)}
+              variant={language === lang ? 'contained' : 'outlined'}
+              color="primary"
+            >
+              {lang.toUpperCase()}
+            </Button>
+          ))}
+        </Stack>
+        <IconButton
+          onClick={handleClearStorage}
+          sx={{ position: 'absolute', right: -50, top: '50%', transform: 'translateY(-50%)' }}
+        >
+          <AutoDeleteIcon />
+        </IconButton>
+      </Box>
+      <Button
+        onClick={onStart}
+        variant="contained"
+        color="success"
+        sx={{ fontSize: '24px', padding: '10px 20px' }}
+      >
         Start
-      </button>
-    </div>
+      </Button>
+    </Box>
   );
 };
 
