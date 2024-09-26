@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import { PiUserSoundBold } from "react-icons/pi";
 import { GrLinkNext } from "react-icons/gr";
-import HoldButton from './components/HoldButton'; 
 import { MdAutoDelete } from "react-icons/md";
 
 
@@ -19,6 +18,7 @@ function App() {
   const [usedWords, setUsedWords] = useState<string[]>([]);
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
 
+  //! there is a duplicated loading of each language, it should be loaded once and then used
   // Load words from text files
   useEffect(() => {
     const loadWords = async () => {
@@ -86,6 +86,7 @@ function App() {
   }, [words, language]);
 
   // Play the word using Speech Synthesis API
+  // does not work on iOS: https://codepen.io/matt-west/pen/DpmMgE
   const speakWord = () => {
     if ('speechSynthesis' in window) {
       const utterance = new SpeechSynthesisUtterance(currentWord);
@@ -134,21 +135,21 @@ function App() {
               {lang.toUpperCase()}
             </button>
           ))}
-              <HoldButton onClick={handleClearStorage} style={{ padding: "10px", position: 'absolute', right: '10px', top: '10px' }} holdTime={1000}>
+              <button onClick={handleClearStorage} style={{ padding: "10px", position: 'absolute', right: '10px', top: '10px' }}>
                 <MdAutoDelete />
-              </HoldButton>
+              </button>
         </div>
         <div className="content">
           <div className="word-display">
             {currentWord ? <h2>{currentWord}</h2> : <p>Press "Next" to start</p>}
           </div>
           <div className="controls">
-            <HoldButton onClick={speakWord} holdTime={0} disabled={!currentWord}>
+            <button onClick={speakWord}  disabled={!currentWord}>
               <PiUserSoundBold />
-            </HoldButton>
-            <HoldButton onClick={handleNext} holdTime={1000}>
+            </button>
+            <button onClick={handleNext}>
               <GrLinkNext />
-            </HoldButton>
+            </button>
             
           </div>
         </div>
