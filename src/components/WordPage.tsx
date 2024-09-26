@@ -22,7 +22,7 @@ const WordPage: React.FC = () => {
     const loadWords = async () => {
       const response = await fetch(`/data/${language}.txt`);
       const text = await response.text();
-      setWords(prevWords => ({ ...prevWords, [language]: text.split(',') }));
+      setWords(prevWords => ({ ...prevWords, [language]: text.split(',').map(w => w.trim()) }));
     };
     loadWords();
   }, [language]);
