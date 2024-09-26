@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import LanguageContext from '../LanguageContext';
 import { Box, Button, IconButton, Stack } from '@mui/material';
 import AutoDeleteIcon from '@mui/icons-material/AutoDelete';
+import { GrLinkNext } from 'react-icons/gr';
 
 interface LandingPageProps {
   onStart: () => void;
@@ -51,7 +52,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
       color="success"
       sx={{ fontSize: '24px', padding: '10px 20px' }}
       >
-      Start
+         <GrLinkNext />
       </Button>
     </Box>
   );
