@@ -3,6 +3,7 @@ import { PiUserSoundBold } from "react-icons/pi";
 import { GrLinkNext } from "react-icons/gr";
 import LanguageContext from '../LanguageContext';
 import ConfirmationPage from './ConfirmationPage';
+import Button from '@mui/material/Button'; // Import MUI Button
 
 interface WordData {
   [key: string]: string[];
@@ -114,16 +115,25 @@ const WordPage: React.FC = () => {
         <ConfirmationPage onConfirm={handleConfirmation} />
       ) : (
         <div className="content">
-          <div className="word-display">
-            {currentWord ? <h2>{currentWord}</h2> : <p>Press "Next" to start</p>}
-          </div>
           <div className="controls">
-            <button onClick={speakWord} disabled={!currentWord}>
-              <PiUserSoundBold />
-            </button>
-            <button onClick={handleNext}>
-              <GrLinkNext />
-            </button>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={handleNext}
+            >
+              <GrLinkNext size={40} />
+            </Button>
+          </div>
+          <div className="word-display" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '80vh' }}>
+            {currentWord ? <h2>{currentWord}</h2> : <p>Press "Next" to start</p>}
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={speakWord}
+              disabled={!currentWord}
+            >
+              <PiUserSoundBold size={40} />
+            </Button>
           </div>
         </div>
       )}
