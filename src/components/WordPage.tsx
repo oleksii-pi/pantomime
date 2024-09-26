@@ -125,7 +125,7 @@ const WordPage: React.FC = () => {
             </Button>
           </div>
           <div className="word-display" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '80vh' }}>
-            {currentWord ? <h2>{currentWord}</h2> : <p>Press "Next" to start</p>}
+            <h2>{currentWord}</h2> 
             <Button
               variant="contained"
               color="primary"
