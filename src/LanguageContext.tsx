@@ -11,21 +11,19 @@ const LanguageContext = createContext<LanguageContextProps>({
   language: 'uk',
   setLanguage: () => {},
   codeToName: () => '',
-  languages: ['de', 'uk'],
+  languages: ['uk', 'de'],
 });
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
-  const languages = ['de', 'uk'];
+  const languages = ['uk', 'de'];
   const [language, setLanguage] = useState<string>('uk');
 
   const codeToName = useCallback((code: string) => {
     switch (code) {
-      case 'de':
-        return 'DE';
       case 'uk':
         return 'UA';
       default:
-        return '';
+        return code.toLowerCase();
     }
   }, []);
 
