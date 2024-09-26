@@ -16,7 +16,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
   };
 
   const handleClearStorage = () => {
-    const confirmReset = window.confirm('Are you sure you want to reset used words?');
+    const confirmReset = window.confirm('Are you sure you want to reset todays used words for selected language?');
     if (confirmReset) {
       const today = new Date().toLocaleDateString();
       localStorage.removeItem(`usedWords_${language}_${today}`);
@@ -26,33 +26,33 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
-      <Box sx={{ position: 'relative', mb: 2 }}>
-      <Stack direction="row" spacing={2}>
-        {languages.map((lang) => (
-        <Button
-          key={lang}
-          onClick={() => handleLanguageChange(lang)}
-          variant={language === lang ? 'contained' : 'outlined'}
-          color="primary"
-        >
-          {codeToName(lang)}
-        </Button>
-        ))}
-      </Stack>
       <IconButton
         onClick={handleClearStorage}
-        sx={{ position: 'absolute', right: -50, top: '50%', transform: 'translateY(-50%)' }}
+        sx={{ position: 'absolute', top: 16, right: 16 }}
       >
         <AutoDeleteIcon />
       </IconButton>
+      <Box sx={{ mb: 2 }}>
+        <Stack direction="row" spacing={2}>
+          {languages.map((lang) => (
+            <Button
+              key={lang}
+              onClick={() => handleLanguageChange(lang)}
+              variant={language === lang ? 'contained' : 'outlined'}
+              color="primary"
+            >
+              {codeToName(lang)}
+            </Button>
+          ))}
+        </Stack>
       </Box>
       <Button
-      onClick={onStart}
-      variant="contained"
-      color="success"
-      sx={{ fontSize: '24px', padding: '10px 20px' }}
+        onClick={onStart}
+        variant="contained"
+        color="success"
+        sx={{ fontSize: '24px', padding: '10px 20px' }}
       >
-         <GrLinkNext />
+        <GrLinkNext />
       </Button>
     </Box>
   );
