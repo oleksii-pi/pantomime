@@ -1,4 +1,4 @@
-import React, { createContext, useState, ReactNode, useCallback } from 'react';
+import React, { createContext, useState, ReactNode, useCallback, useEffect } from 'react';
 
 interface LanguageContextProps {
   language: string;
@@ -16,7 +16,14 @@ const LanguageContext = createContext<LanguageContextProps>({
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   const languages = ['uk', 'de', 'en'];
-  const [language, setLanguage] = useState<string>('uk');
+  const [language, setLanguage] = useState<string>(() => {
+    const storedLanguage = localStorage.getItem('language');
+    return storedLanguage ? storedLanguage : 'uk';
+  });
+
+  useEffect(() => {
+    localStorage.setItem('language', language);
+  }, [language]);
 
   const codeToName = useCallback((code: string) => {
     switch (code) {
