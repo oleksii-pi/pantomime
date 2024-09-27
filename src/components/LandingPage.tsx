@@ -1,8 +1,10 @@
 import React, { useContext } from 'react';
 import LanguageContext from '../LanguageContext';
 import { Box, Button, IconButton, Stack } from '@mui/material';
-import AutoDeleteIcon from '@mui/icons-material/AutoDelete';
+import { MdOutlineAutoDelete } from "react-icons/md";
 import { GrLinkNext } from 'react-icons/gr';
+import { FaGithub } from 'react-icons/fa';
+
 
 interface LandingPageProps {
   onStart: () => void;
@@ -26,11 +28,20 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
+      <a
+        href="https://github.com/oleksii-pi/pantomime"
+        target="_blank"
+        style={{ position: 'absolute', top: 16, left: 16 }}
+        rel="noopener noreferrer"
+      >
+        <FaGithub size={40} color='#000'/>
+      </a>
+      
       <IconButton
         onClick={handleClearStorage}
         sx={{ position: 'absolute', top: 16, right: 16 }}
       >
-        <AutoDeleteIcon />
+        <MdOutlineAutoDelete size={40} />
       </IconButton>
       <Box sx={{ mb: 2 }}>
         <Stack direction="row" spacing={2}>
@@ -54,6 +65,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
       >
         <GrLinkNext />
       </Button>
+      
     </Box>
   );
 };

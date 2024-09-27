@@ -1,5 +1,5 @@
-Pantomime game for kids 5-7 years (DE, UA)
-https://oleksii-pi.github.io/pantomime/
+Pantomime game for kids 5-7 years (EN, DE, UA)
+
 https://pantomime-e1bc4.web.app/
 
 ## Available Scripts

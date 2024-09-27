@@ -7,7 +7,7 @@ interface LanguageContextProps {
   languages: string[];
 }
 
-const languages = ['uk', 'de', 'en'];
+const languages = ['en', 'de', 'uk'];
 
 const LanguageContext = createContext<LanguageContextProps>({
   language: languages[0],
