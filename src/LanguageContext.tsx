@@ -7,18 +7,19 @@ interface LanguageContextProps {
   languages: string[];
 }
 
+const languages = ['uk', 'de', 'en'];
+
 const LanguageContext = createContext<LanguageContextProps>({
-  language: 'uk',
+  language: languages[0],
   setLanguage: () => {},
   codeToName: () => '',
-  languages: ['uk', 'de', 'en'],
+  languages,
 });
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
-  const languages = ['uk', 'de', 'en'];
   const [language, setLanguage] = useState<string>(() => {
     const storedLanguage = localStorage.getItem('language');
-    return storedLanguage ? storedLanguage : 'uk';
+    return storedLanguage ? storedLanguage : languages[0];
   });
 
   useEffect(() => {
