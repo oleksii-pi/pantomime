@@ -50,7 +50,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
         onClick={onStart}
         variant="contained"
         color="success"
-        sx={{ fontSize: '24px', padding: '10px 20px' }}
+        sx={{ fontSize: '24px', padding: '20px 40px', marginTop: 10 }}
       >
         <GrLinkNext />
       </Button>
