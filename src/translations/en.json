@@ -20,6 +20,7 @@
     "notification.no-words-found": "No words found."
   },
   "title": {
-    "rules": "Rules"
+    "rules": "Rules",
+    "level": "Level"
   }
 }

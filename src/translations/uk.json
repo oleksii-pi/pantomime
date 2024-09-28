@@ -20,6 +20,7 @@
     "notification.no-words-found": "Слова не знайдено."
   },
   "title": {
-    "rules": "Правила"
+    "rules": "Правила",
+    "level": "Складність"
   }
 }

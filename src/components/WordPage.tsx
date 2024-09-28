@@ -5,6 +5,9 @@ import LanguageContext from '../LanguageContext';
 import ConfirmationPage from './ConfirmationPage';
 import Button from '@mui/material/Button'; // Import MUI Button
 import TranslationContext from '../TranslationContext';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import { Box } from '@mui/material';
 
 interface WordData {
   [key: string]: string[];
@@ -16,18 +19,18 @@ const WordPage: React.FC = () => {
   const [words, setWords] = useState<WordData>({});
   const [currentWord, setCurrentWord] = useState<string>('');
   const [usedWords, setUsedWords] = useState<string[]>([]);
-  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
   const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
+  const [level, setLevel] = useState<number>(1);
 
   // Load words from text files
   useEffect(() => {
     const loadWords = async () => {
-      const response = await fetch(`/data/${language}.txt`);
+      const response = await fetch(`/data/${language}.${level}.txt`);
       const text = await response.text();
       setWords(prevWords => ({ ...prevWords, [language]: text.split(',').map(w => w.trim()) }));
     };
     loadWords();
-  }, [language]);
+  }, [language, level]);
 
   // Load used words from localStorage
   useEffect(() => {
@@ -45,17 +48,6 @@ const WordPage: React.FC = () => {
     const today = new Date().toLocaleDateString();
     localStorage.setItem(`usedWords_${language}_${today}`, JSON.stringify(usedWords));
   }, [usedWords, language]);
-
-  // Load available voices for speech synthesis
-  useEffect(() => {
-    if ('speechSynthesis' in window) {
-      const loadVoices = () => {
-        setVoices(window.speechSynthesis.getVoices());
-      };
-      window.speechSynthesis.onvoiceschanged = loadVoices;
-      loadVoices();
-    }
-  }, []);
 
   // Get a random word
   const getRandomWord = (): void => {
@@ -116,6 +108,18 @@ const WordPage: React.FC = () => {
         <ConfirmationPage onConfirm={handleConfirmation} />
       ) : (
         <div className="content">
+          <Box >
+            <span style={{ fontFamily: 'Roboto, Arial, sans-serif', fontSize: '20px', fontWeight: '300', marginRight: '16px' }}>{t('title.level')}</span>
+            <Select
+              size='small'
+              value={level}
+              onChange={(e) => setLevel(Number(e.target.value))}
+            >
+              <MenuItem value={1}>1</MenuItem>
+              <MenuItem value={2}>2</MenuItem>
+              <MenuItem value={3}>3</MenuItem>
+            </Select>
+          </Box>
           <div className="controls">
             <Button
               variant="contained"
