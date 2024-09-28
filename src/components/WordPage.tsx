@@ -132,14 +132,16 @@ const WordPage: React.FC = () => {
           </div>
           <div className="word-display" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '80vh' }}>
             <h2>{currentWord}</h2> 
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={speakWord}
-              disabled={!currentWord}
-            >
-              <PiUserSoundBold size={40} />
-            </Button>
+            {level === 1 && (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={speakWord}
+                disabled={!currentWord}
+              >
+                <PiUserSoundBold size={40} />
+              </Button>
+            )}
           </div>
         </div>
       )}
