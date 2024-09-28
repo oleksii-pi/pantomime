@@ -10,6 +10,21 @@ interface RulesPageProps {
 const RulesPage: React.FC<RulesPageProps> = ({ onNext }) => {
   const { t } = useContext(TranslationContext);
 
+  const renderTextWithBold = (text: string) => {
+    const parts = text.split(/(\*\*.*?\*\*)/);
+    return parts.map((part, index) => {
+      if (part.startsWith('**') && part.endsWith('**')) {
+        return (
+          <strong key={index}>
+            {part.slice(2, -2)}
+          </strong>
+        );
+      }
+      return part;
+    });
+  };
+
+
   return (
       <Box sx={{ 
           mb: 2, 
@@ -20,7 +35,7 @@ const RulesPage: React.FC<RulesPageProps> = ({ onNext }) => {
         <p style={{ fontFamily: 'Roboto, Arial, sans-serif', fontSize: '20px', fontWeight: '300', margin: '0 0 16px 0' }}>
           {t('game.rules').split('\n').map((line, index) => (
             <span key={index}>
-              {line}
+              {renderTextWithBold(line)}
               <br />
             </span>
           ))}
