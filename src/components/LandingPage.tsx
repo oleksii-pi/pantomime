@@ -30,26 +30,12 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNext }) => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-      <a
-        href="https://github.com/oleksii-pi/pantomime"
-        target="_blank"
-        style={{ position: 'absolute', bottom: 16, right: 100 }}
-        rel="noopener noreferrer"
-      >
-        <FaGithub size={40} color='#000'/>
-      </a>
       
-      <IconButton
-        onClick={handleClearStorage}
-        sx={{ position: 'absolute', bottom: 16, right: 16 }}
-      >
-        <MdOutlineAutoDelete size={40} />
-      </IconButton>
       <Box 
         component="img"
         src="/images/landing-page-image.webp"
         alt="Children playing Pantomime game"
-        sx={{ width: '100%', maxWidth: '200px', mb: 2 }}
+        sx={{ width: '100%', maxWidth: '300px', mb: 2 }}
       />
       <Box 
         sx={{ 
@@ -85,7 +71,21 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNext }) => {
         {t('button.rules')}
         <GrLinkNext />
       </Button>
-      
+      <Stack direction="row" spacing={2} marginTop={10}>
+        <IconButton
+          href="https://github.com/oleksii-pi/pantomime"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <FaGithub size={40} color='#000'/>
+        </IconButton>
+        
+        <IconButton
+          onClick={handleClearStorage}
+        >
+          <MdOutlineAutoDelete size={40} />
+        </IconButton>
+      </Stack>
     </Box>
   );
 };
