@@ -29,11 +29,11 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNext }) => {
   };
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
       <a
         href="https://github.com/oleksii-pi/pantomime"
         target="_blank"
-        style={{ position: 'absolute', top: 16, left: 16 }}
+        style={{ position: 'absolute', bottom: 16, right: 100 }}
         rel="noopener noreferrer"
       >
         <FaGithub size={40} color='#000'/>
@@ -41,7 +41,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNext }) => {
       
       <IconButton
         onClick={handleClearStorage}
-        sx={{ position: 'absolute', top: 16, right: 16 }}
+        sx={{ position: 'absolute', bottom: 16, right: 16 }}
       >
         <MdOutlineAutoDelete size={40} />
       </IconButton>
@@ -58,7 +58,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNext }) => {
           mx: { xs: 2, md: 20 } 
         }}
       >
-        <p style={{ fontFamily: 'Roboto, Arial, sans-serif', fontSize: '30px', fontWeight: '300', margin: '0 0 16px 0' }}>
+        <p style={{ fontFamily: 'Roboto, Arial, sans-serif', fontSize: '20px', fontWeight: '300', margin: '0 0 16px 0' }}>
           {t('game.description')}
         </p>
       </Box>
