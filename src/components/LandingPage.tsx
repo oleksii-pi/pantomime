@@ -4,6 +4,7 @@ import { Box, Button, IconButton, Stack } from '@mui/material';
 import { MdOutlineAutoDelete } from "react-icons/md";
 import { GrLinkNext } from 'react-icons/gr';
 import { FaGithub } from 'react-icons/fa';
+import TranslationContext from '../TranslationContext';
 
 
 interface LandingPageProps {
@@ -12,6 +13,7 @@ interface LandingPageProps {
 
 const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
   const { language, setLanguage, codeToName, languages } = useContext(LanguageContext);
+  const { t } = useContext(TranslationContext);
 
   const handleLanguageChange = (lang: string) => {
     setLanguage(lang);
@@ -43,6 +45,17 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
       >
         <MdOutlineAutoDelete size={40} />
       </IconButton>
+      <Box 
+        sx={{ 
+          mb: 2, 
+          textAlign: 'center', 
+          mx: { xs: 2, md: 20 } 
+        }}
+      >
+        <p style={{ fontFamily: 'Roboto, Arial, sans-serif', fontSize: '30px', fontWeight: '300', margin: '0 0 16px 0' }}>
+          {t('game.description')}
+        </p>
+      </Box>
       <Box sx={{ mb: 2 }}>
         <Stack direction="row" spacing={2}>
           {languages.map((lang) => (
@@ -61,7 +74,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
         onClick={onStart}
         variant="contained"
         color="success"
-        sx={{ fontSize: '24px', padding: '20px 40px', marginTop: 10 }}
+        sx={{ fontSize: '24px', padding: '20px 40px' }}
       >
         <GrLinkNext />
       </Button>
