@@ -84,16 +84,15 @@ const WordPage: React.FC = () => {
   // Play the word using Speech Synthesis API
   const speakWord = () => {
     if ('speechSynthesis' in window) {
-      const utterance = new SpeechSynthesisUtterance(currentWord);
+      const msg = new SpeechSynthesisUtterance(currentWord);
+      const voices = window.speechSynthesis.getVoices();
       let voice = voices.find(v => v.lang.startsWith(language));
+
       if (!voice) {
         voice = voices[0];
       }
-      utterance.voice = voice;
-      utterance.lang = voice.lang;
-      setTimeout(() => {
-        window.speechSynthesis.speak(utterance);
-      }, 1000); // 1-second delay
+      msg.voice = voice;
+      window.speechSynthesis.speak(msg);
     } else {
       alert(t("notification.speech-synthesis-not-supported"));
     }
