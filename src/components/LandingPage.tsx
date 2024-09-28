@@ -73,7 +73,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNext }) => {
       </Button>
       <Stack direction="row" spacing={2} marginTop={10}>
         <IconButton
-          href="https://github.com/oleksii-pi/pantomime"
+          href="https://github.com/oleksii-pi/pantomime/issues"
           target="_blank"
           rel="noopener noreferrer"
         >
