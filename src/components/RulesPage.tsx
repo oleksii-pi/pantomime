@@ -27,7 +27,7 @@ const RulesPage: React.FC<RulesPageProps> = ({ onNext }) => {
         color="success"
         sx={{ fontSize: '24px', padding: '20px 40px' }}
       >
-        {t('button.start')}
+        {t('button.play')}
         <GrLinkNext />
       </Button>
     </div>
