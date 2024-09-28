@@ -8,10 +8,10 @@ import TranslationContext from '../TranslationContext';
 
 
 interface LandingPageProps {
-  onStart: () => void;
+  onNext: () => void;
 }
 
-const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
+const LandingPage: React.FC<LandingPageProps> = ({ onNext }) => {
   const { language, setLanguage, codeToName, languages } = useContext(LanguageContext);
   const { t } = useContext(TranslationContext);
 
@@ -71,7 +71,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
         </Stack>
       </Box>
       <Button
-        onClick={onStart}
+        onClick={onNext}
         variant="contained"
         color="success"
         sx={{ fontSize: '24px', padding: '20px 40px' }}
