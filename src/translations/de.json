@@ -11,6 +11,12 @@
     "back": "Zurück"
   },
   "confirmation": {
-    "sure": "Bist du sicher?"
+    "sure": "Bist du sicher?",
+    "sure-cleanup-history": "Bist du sicher, dass du die heute verwendeten Wörter für die ausgewählte Sprache zurücksetzen möchtest?"
+  },
+  "notification": {
+    "words-have-been-reset": "Verwendete Wörter wurden zurückgesetzt.",
+    "notification.speech-synthesis-not-supported": "Die Sprachsynthese wird in deinem Browser nicht unterstützt.",
+    "notification.no-words-found": "Keine Wörter gefunden."
   }
 }

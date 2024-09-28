@@ -71,7 +71,7 @@ const WordPage: React.FC = () => {
       setCurrentWord(word);
       setUsedWords([...usedWords, word]);
     } else {
-      alert('Words not loaded yet, please try again later.');
+      alert(t("notification.no-words-found"));
     }
   };
 
@@ -95,7 +95,7 @@ const WordPage: React.FC = () => {
         window.speechSynthesis.speak(utterance);
       }, 1000); // 1-second delay
     } else {
-      alert('Speech Synthesis not supported in your browser.');
+      alert(t("notification.speech-synthesis-not-supported"));
     }
   };
 

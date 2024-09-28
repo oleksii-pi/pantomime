@@ -11,6 +11,12 @@
     "back": "Back"
   },
   "confirmation": {
-    "sure": "Are you sure?"
+    "sure": "Are you sure?",
+    "sure-cleanup-history": "Are you sure you want to reset today's used words for the selected language?"
+  },
+  "notification": {
+    "words-have-been-reset": "Used words have been reset.",
+    "notification.speech-synthesis-not-supported": "Speech synthesis is not supported in your browser.",
+    "notification.no-words-found": "No words found."
   }
 }

@@ -11,6 +11,12 @@
     "back": "Назад"
   },
   "confirmation": {
-    "sure": "Ви впевнені?"
+    "sure": "Ви впевнені?",
+    "sure-cleanup-history": "Ви впевнені, що хочете скинути використані слова за сьогодні для обраної мови?"
+  },
+  "notification": {
+    "words-have-been-reset": "Використані слова були скинуті.",
+    "notification.speech-synthesis-not-supported": "Синтез мовлення не підтримується в вашому браузері.",
+    "notification.no-words-found": "Слова не знайдено."
   }
 }

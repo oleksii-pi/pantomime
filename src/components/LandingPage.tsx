@@ -20,11 +20,11 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNext }) => {
   };
 
   const handleClearStorage = () => {
-    const confirmReset = window.confirm('Are you sure you want to reset todays used words for selected language?');
+    const confirmReset = window.confirm(t("confirmation.sure-cleanup-history"));
     if (confirmReset) {
       const today = new Date().toLocaleDateString();
       localStorage.removeItem(`usedWords_${language}_${today}`);
-      alert('Used words have been reset.');
+      alert(t("notification.words-have-been-reset"));
     }
   };
 
