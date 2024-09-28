@@ -46,6 +46,12 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNext }) => {
         <MdOutlineAutoDelete size={40} />
       </IconButton>
       <Box 
+        component="img"
+        src="/images/landing-page-image.webp"
+        alt="Children playing Pantomime game"
+        sx={{ width: '100%', maxWidth: '200px', mb: 2 }}
+      />
+      <Box 
         sx={{ 
           mb: 2, 
           textAlign: 'center', 
