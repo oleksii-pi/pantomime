@@ -17,7 +17,7 @@ const ConfirmationPage: React.FC<ConfirmationPageProps> = ({ onConfirm }) => {
           <GrLinkPrevious />
           {t('button.back')}
         </Button>
-        <Button variant="contained" color='success' onClick={() => onConfirm(true)}>
+        <Button variant="contained" color="secondary" onClick={() => onConfirm(true)}>
           {t('button.yes')}
           <GrLinkNext />
         </Button>
