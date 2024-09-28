@@ -4,6 +4,7 @@ import { GrLinkNext } from "react-icons/gr";
 import LanguageContext from '../LanguageContext';
 import ConfirmationPage from './ConfirmationPage';
 import Button from '@mui/material/Button'; // Import MUI Button
+import TranslationContext from '../TranslationContext';
 
 interface WordData {
   [key: string]: string[];
@@ -11,6 +12,7 @@ interface WordData {
 
 const WordPage: React.FC = () => {
   const { language } = useContext(LanguageContext);
+  const { t } = useContext(TranslationContext);
   const [words, setWords] = useState<WordData>({});
   const [currentWord, setCurrentWord] = useState<string>('');
   const [usedWords, setUsedWords] = useState<string[]>([]);
@@ -121,6 +123,7 @@ const WordPage: React.FC = () => {
               color="secondary"
               onClick={handleNext}
             >
+              {t('button.next-word')}
               <GrLinkNext size={40} />
             </Button>
           </div>

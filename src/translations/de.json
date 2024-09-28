@@ -2,5 +2,15 @@
   "game": {
     "description": "Pantomime ist ein lustiges Spiel, bei dem man Dinge ohne zu sprechen darstellt. Man benutzt seine Hände und seinen Körper, um zu zeigen, was man meint, und die Freunde versuchen zu erraten, was man darstellt.",
     "rules": "Das Spiel ist für eine Gruppe von 3 oder mehr Personen geeignet.\n1. Wählt, wer zuerst das Wort zeigen soll – der Leiter.\n2. Der Leiter sieht ein Wort auf dem Bildschirm, das er zeigen muss.\n3. Der Leiter versucht, das Wort oder den Satz mit Gesten, Gesichtsausdrücken und Bewegungen zu zeigen. Es ist verboten: zu sprechen, Geräusche zu machen oder auf Dinge zu zeigen.\n4. Die anderen Spieler versuchen, das Wort zu erraten, indem sie laut raten.\n5. Wer zuerst richtig rät, darf aussuchen, wer der nächste Leiter ist. Man kann sich selbst wählen."
+  },
+  "button": {
+    "rules": "Regeln",
+    "start": "Start",
+    "next-word": "Nächstes Wort",
+    "yes": "Ja",
+    "back": "Zurück"
+  },
+  "confirmation": {
+    "sure": "Bist du sicher?"
   }
 }

@@ -2,5 +2,15 @@
   "game": {
     "description": "Pantomime is a fun game where you act things out without talking. You use your hands and body to show what you mean, and your friends try to guess what you are pretending to be.",
     "rules": "The game is suitable for a group of 3 or more people.\n1. Decide who will be the first to act out the word — the leader.\n2. The leader will see a word on the screen that needs to be acted out.\n3. The leader tries to depict the word or phrase using gestures, facial expressions, and movements. It is forbidden to: speak, use sounds, or point to objects around.\n4. The other players try to guess the word by saying their guesses out loud.\n5. The first person to guess correctly chooses who will be the next leader. They can choose themselves to be the leader."
+  },
+  "button": {
+    "rules": "Rules",
+    "start": "Start",
+    "next-word": "Next word",
+    "yes": "Yes",
+    "back": "Back"
+  },
+  "confirmation": {
+    "sure": "Are you sure?"
   }
 }

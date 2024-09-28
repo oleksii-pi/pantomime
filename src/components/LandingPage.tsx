@@ -76,6 +76,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNext }) => {
         color="success"
         sx={{ fontSize: '24px', padding: '20px 40px' }}
       >
+        {t('button.rules')}
         <GrLinkNext />
       </Button>
       
