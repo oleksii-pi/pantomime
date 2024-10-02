@@ -12,6 +12,8 @@ interface WordData {
   [key: string]: string[];
 }
 
+const zeroLevelWordsCount = 18;
+
 const WordPage: React.FC = () => {
   const { language } = useContext(LanguageContext);
   const { t } = useContext(TranslationContext);
@@ -25,7 +27,8 @@ const WordPage: React.FC = () => {
   useEffect(() => {
     const loadWords = async () => {
       if (level === 0) {
-        setWords({ [language]: [] });
+        const zeroLevelWords = Array.from({ length: zeroLevelWordsCount }, (_, i) => (i + 1).toString());
+        setWords({ [language]: zeroLevelWords });
         return;
       }
       const response = await fetch(`/data/${language}.${level}.txt`);
@@ -38,19 +41,19 @@ const WordPage: React.FC = () => {
   // Load used words from localStorage
   useEffect(() => {
     const today = new Date().toLocaleDateString();
-    const storedData = localStorage.getItem(`usedWords_${language}_${today}`);
+    const storedData = localStorage.getItem(`usedWords_${language}_${level}_${today}`);
     if (storedData) {
       setUsedWords(JSON.parse(storedData));
     } else {
       setUsedWords([]);
     }
-  }, [language]);
+  }, [language, level]);
 
   // Store used words to localStorage
   useEffect(() => {
     const today = new Date().toLocaleDateString();
-    localStorage.setItem(`usedWords_${language}_${today}`, JSON.stringify(usedWords));
-  }, [usedWords, language]);
+    localStorage.setItem(`usedWords_${language}_${level}_${today}`, JSON.stringify(usedWords));
+  }, [usedWords, language, level]);
 
   // Get a random word
   const getRandomWord = (): void => {
@@ -104,7 +107,7 @@ const WordPage: React.FC = () => {
               value={level}
               onChange={(e) => setLevel(Number(e.target.value))}
             >
-              <MenuItem value={0}>0</MenuItem>
+              <MenuItem value={0}>5+</MenuItem>
               <MenuItem value={1}>1</MenuItem>
               <MenuItem value={2}>2</MenuItem>
               <MenuItem value={3}>3</MenuItem>
@@ -121,7 +124,14 @@ const WordPage: React.FC = () => {
             </Button>
           </div>
           <div className="word-display" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '80vh' }}>
-            
+            {level === 0 && (
+              <img 
+              src={`./data/level0/${currentWord}.webp`} 
+              alt={currentWord} 
+              width="300" 
+              height="300" 
+              />
+            )}
             {level !== 0 && (<h2>{currentWord}</h2>)} 
           </div>
         </div>
