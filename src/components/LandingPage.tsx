@@ -1,10 +1,13 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import LanguageContext from '../LanguageContext';
 import { Box, Button, IconButton, Stack } from '@mui/material';
 import { MdOutlineAutoDelete } from "react-icons/md";
 import { GrLinkNext } from 'react-icons/gr';
 import { FaGithub } from 'react-icons/fa';
 import TranslationContext from '../TranslationContext';
+import { analytics } from '../firebaseConfig'; 
+import { logEvent } from 'firebase/analytics';
+import { log } from 'console';
 
 
 interface LandingPageProps {
@@ -15,13 +18,19 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNext }) => {
   const { language, setLanguage, codeToName, languages } = useContext(LanguageContext);
   const { t } = useContext(TranslationContext);
 
+  useEffect(() => {
+    logEvent(analytics, 'page_view_LandingPage'); 
+  }, []);
+
   const handleLanguageChange = (lang: string) => {
+    logEvent(analytics, 'set_language', { language: lang }); 
     setLanguage(lang);
   };
 
   const handleClearStorage = () => {
     const confirmReset = window.confirm(t("confirmation.sure-cleanup-history"));
     if (confirmReset) {
+      logEvent(analytics, 'clear_storage');
       const today = new Date().toLocaleDateString();
       localStorage.removeItem(`usedWords_${language}_${today}`);
       alert(t("notification.words-have-been-reset"));

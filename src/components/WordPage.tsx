@@ -7,6 +7,8 @@ import TranslationContext from '../TranslationContext';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { Box } from '@mui/material';
+import { analytics } from '../firebaseConfig'; 
+import { logEvent } from 'firebase/analytics';
 
 interface WordData {
   [key: string]: string[];
@@ -22,6 +24,11 @@ const WordPage: React.FC = () => {
   const [usedWords, setUsedWords] = useState<string[]>([]);
   const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
   const [level, setLevel] = useState<number>(1);
+  const [wordDisplayTime, setWordDisplayTime] = useState<number>(Date.now());
+
+  useEffect(() => {
+    logEvent(analytics, 'page_view_WordPage'); 
+  }, []);
 
   // Load words from text files
   useEffect(() => {
@@ -58,6 +65,16 @@ const WordPage: React.FC = () => {
   // Get a random word
   const getRandomWord = (): void => {
     if (words[language] && words[language].length > 0) {
+      
+      logEvent(analytics, 'get_random_word', { 
+        language, 
+        level, 
+        currentWord, 
+        timeSpent: Date.now() - wordDisplayTime 
+      });
+
+      setWordDisplayTime(Date.now());
+      
       const availableWords = words[language].filter(w => !usedWords.includes(w));
       if (availableWords.length === 0) {
         // Reset used words if all words have been used
@@ -105,7 +122,10 @@ const WordPage: React.FC = () => {
             <Select
               size='small'
               value={level}
-              onChange={(e) => setLevel(Number(e.target.value))}
+              onChange={(e) => {
+                setLevel(Number(e.target.value));
+                logEvent(analytics, 'set_level', { level: e.target.value });
+              }}
             >
               <MenuItem value={0}>5+</MenuItem>
               <MenuItem value={1}>1</MenuItem>
