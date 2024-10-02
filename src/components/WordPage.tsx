@@ -12,7 +12,7 @@ interface WordData {
   [key: string]: string[];
 }
 
-const zeroLevelWordsCount = 18;
+const zeroLevelWordsCount = 44;
 
 const WordPage: React.FC = () => {
   const { language } = useContext(LanguageContext);
