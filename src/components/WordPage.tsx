@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { PiUserSoundBold } from "react-icons/pi";
 import { GrLinkNext } from "react-icons/gr";
 import LanguageContext from '../LanguageContext';
 import ConfirmationPage from './ConfirmationPage';
@@ -25,6 +24,10 @@ const WordPage: React.FC = () => {
   // Load words from text files
   useEffect(() => {
     const loadWords = async () => {
+      if (level === 0) {
+        setWords({ [language]: [] });
+        return;
+      }
       const response = await fetch(`/data/${language}.${level}.txt`);
       const text = await response.text();
       setWords(prevWords => ({ ...prevWords, [language]: text.split(',').map(w => w.trim()) }));
@@ -73,23 +76,6 @@ const WordPage: React.FC = () => {
     }
   }, [words, language]);
 
-  // Play the word using Speech Synthesis API
-  const speakWord = () => {
-    if ('speechSynthesis' in window) {
-      const msg = new SpeechSynthesisUtterance(currentWord);
-      const voices = window.speechSynthesis.getVoices();
-      let voice = voices.find(v => v.lang.startsWith(language));
-
-      if (!voice) {
-        voice = voices[0];
-      }
-      msg.voice = voice;
-      window.speechSynthesis.speak(msg);
-    } else {
-      alert(t("notification.speech-synthesis-not-supported"));
-    }
-  };
-
   // Handle the Next button click
   const handleNext = () => {
     setShowConfirmation(true);
@@ -115,6 +101,7 @@ const WordPage: React.FC = () => {
               value={level}
               onChange={(e) => setLevel(Number(e.target.value))}
             >
+              <MenuItem value={0}>0</MenuItem>
               <MenuItem value={1}>1</MenuItem>
               <MenuItem value={2}>2</MenuItem>
               <MenuItem value={3}>3</MenuItem>
@@ -131,17 +118,8 @@ const WordPage: React.FC = () => {
             </Button>
           </div>
           <div className="word-display" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '80vh' }}>
-            <h2>{currentWord}</h2> 
-            {level === 1 && (
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={speakWord}
-                disabled={!currentWord}
-              >
-                <PiUserSoundBold size={40} />
-              </Button>
-            )}
+            
+            {level !== 0 && (<h2>{currentWord}</h2>)} 
           </div>
         </div>
       )}
