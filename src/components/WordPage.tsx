@@ -58,8 +58,11 @@ const WordPage: React.FC = () => {
       const availableWords = words[language].filter(w => !usedWords.includes(w));
       if (availableWords.length === 0) {
         // Reset used words if all words have been used
-        setUsedWords([]);
-        return getRandomWord();
+        const randomIndex = Math.floor(Math.random() * words[language].length);
+        const word =  words[language][randomIndex];
+        setCurrentWord(word);
+        setUsedWords([word]);
+        return;
       }
       const randomIndex = Math.floor(Math.random() * availableWords.length);
       const word = availableWords[randomIndex];
