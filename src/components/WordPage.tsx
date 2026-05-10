@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback, useRef } from 'react';
 import { GrLinkNext } from "react-icons/gr";
 import LanguageContext from '../LanguageContext';
 import ConfirmationPage from './ConfirmationPage';
-import Button from '@mui/material/Button'; // Import MUI Button
+import Button from '@mui/material/Button';
 import TranslationContext from '../TranslationContext';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
@@ -16,15 +16,25 @@ interface WordData {
 
 const zeroLevelWordsCount = 44;
 
+const getUsedWordsStorageKey = (language: string, level: number): string => {
+  const today = new Date().toLocaleDateString();
+  return `usedWords_${language}_${level}_${today}`;
+};
+
 const WordPage: React.FC = () => {
   const { language } = useContext(LanguageContext);
   const { t } = useContext(TranslationContext);
   const [words, setWords] = useState<WordData>({});
   const [currentWord, setCurrentWord] = useState<string>('');
   const [usedWords, setUsedWords] = useState<string[]>([]);
+  const [usedWordsStorageKey, setUsedWordsStorageKey] = useState<string>(() =>
+    getUsedWordsStorageKey(language, 1)
+  );
   const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
   const [level, setLevel] = useState<number>(1);
-  const [wordDisplayTime, setWordDisplayTime] = useState<number>(Date.now());
+  const usedWordsRef = useRef<string[]>([]);
+  const currentWordRef = useRef<string>('');
+  const wordDisplayTimeRef = useRef<number>(Date.now());
 
   useEffect(() => {
     logEvent(analytics, 'page_view_WordPage'); 
@@ -38,66 +48,84 @@ const WordPage: React.FC = () => {
         setWords({ [language]: zeroLevelWords });
         return;
       }
-      const response = await fetch(`/data/${language}.${level}.txt`);
-      const text = await response.text();
-      setWords(prevWords => ({ ...prevWords, [language]: text.split(',').map(w => w.trim()) }));
+      try {
+        const response = await fetch(`/data/${language}.${level}.txt`);
+        if (!response.ok) {
+          throw new Error(`Could not load words for ${language}.${level}`);
+        }
+        const text = await response.text();
+        const loadedWords = text
+          .split(',')
+          .map(w => w.trim())
+          .filter(Boolean);
+        setWords(prevWords => ({ ...prevWords, [language]: loadedWords }));
+      } catch (error) {
+        console.error(error);
+        setWords(prevWords => ({ ...prevWords, [language]: [] }));
+      }
     };
     loadWords();
   }, [language, level]);
 
   // Load used words from localStorage
   useEffect(() => {
-    const today = new Date().toLocaleDateString();
-    const storedData = localStorage.getItem(`usedWords_${language}_${level}_${today}`);
-    if (storedData) {
-      setUsedWords(JSON.parse(storedData));
-    } else {
+    const storageKey = getUsedWordsStorageKey(language, level);
+    const storedData = localStorage.getItem(storageKey);
+    try {
+      const parsedUsedWords = storedData ? JSON.parse(storedData) : [];
+      usedWordsRef.current = parsedUsedWords;
+      setUsedWords(parsedUsedWords);
+    } catch (error) {
+      console.error(error);
+      usedWordsRef.current = [];
       setUsedWords([]);
     }
+    setUsedWordsStorageKey(storageKey);
   }, [language, level]);
 
   // Store used words to localStorage
   useEffect(() => {
-    const today = new Date().toLocaleDateString();
-    localStorage.setItem(`usedWords_${language}_${level}_${today}`, JSON.stringify(usedWords));
-  }, [usedWords, language, level]);
+    usedWordsRef.current = usedWords;
+    if (usedWordsStorageKey === getUsedWordsStorageKey(language, level)) {
+      localStorage.setItem(usedWordsStorageKey, JSON.stringify(usedWords));
+    }
+  }, [usedWords, usedWordsStorageKey, language, level]);
 
   // Get a random word
-  const getRandomWord = (): void => {
-    if (words[language] && words[language].length > 0) {
+  const getRandomWord = useCallback((): void => {
+    const wordList = words[language];
+    if (wordList && wordList.length > 0) {
       
       logEvent(analytics, 'get_random_word', { 
         language, 
         level, 
-        currentWord, 
-        timeSpent: Date.now() - wordDisplayTime 
+        currentWord: currentWordRef.current, 
+        timeSpent: Date.now() - wordDisplayTimeRef.current 
       });
 
-      setWordDisplayTime(Date.now());
-      
-      const availableWords = words[language].filter(w => !usedWords.includes(w));
-      if (availableWords.length === 0) {
-        // Reset used words if all words have been used
-        const randomIndex = Math.floor(Math.random() * words[language].length);
-        const word =  words[language][randomIndex];
-        setCurrentWord(word);
-        setUsedWords([word]);
-        return;
-      }
-      const randomIndex = Math.floor(Math.random() * availableWords.length);
-      const word = availableWords[randomIndex];
+      wordDisplayTimeRef.current = Date.now();
+
+      const previousUsedWords = usedWordsRef.current;
+      const availableWords = wordList.filter(w => !previousUsedWords.includes(w));
+      const wordsToPickFrom = availableWords.length === 0 ? wordList : availableWords;
+      const randomIndex = Math.floor(Math.random() * wordsToPickFrom.length);
+      const word = wordsToPickFrom[randomIndex];
+      const nextUsedWords = availableWords.length === 0 ? [word] : [...previousUsedWords, word];
+
+      usedWordsRef.current = nextUsedWords;
+      currentWordRef.current = word;
       setCurrentWord(word);
-      setUsedWords([...usedWords, word]);
+      setUsedWords(nextUsedWords);
     } else {
       alert(t("notification.no-words-found"));
     }
-  };
+  }, [language, level, t, words]);
 
   useEffect(() => {
     if (words[language] && words[language].length > 0) {
       getRandomWord();
     }
-  }, [words, language]);
+  }, [getRandomWord, language, words]);
 
   // Handle the Next button click
   const handleNext = () => {
@@ -131,6 +159,7 @@ const WordPage: React.FC = () => {
               <MenuItem value={1}>1</MenuItem>
               <MenuItem value={2}>2</MenuItem>
               <MenuItem value={3}>3</MenuItem>
+              <MenuItem value={4}>4</MenuItem>
             </Select>
           </Box>
           <div className="controls">

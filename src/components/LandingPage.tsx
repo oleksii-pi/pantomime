@@ -7,7 +7,6 @@ import { FaGithub } from 'react-icons/fa';
 import TranslationContext from '../TranslationContext';
 import { analytics } from '../firebaseConfig'; 
 import { logEvent } from 'firebase/analytics';
-import { log } from 'console';
 
 
 interface LandingPageProps {
@@ -32,7 +31,9 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNext }) => {
     if (confirmReset) {
       logEvent(analytics, 'clear_storage');
       const today = new Date().toLocaleDateString();
-      localStorage.removeItem(`usedWords_${language}_${today}`);
+      Object.keys(localStorage)
+        .filter(key => key.startsWith(`usedWords_${language}_`) && key.endsWith(`_${today}`))
+        .forEach(key => localStorage.removeItem(key));
       alert(t("notification.words-have-been-reset"));
     }
   };
